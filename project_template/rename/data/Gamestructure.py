@@ -1,6 +1,7 @@
 import time
 import numpy as np
 import sys
+import random
 
 # Delay printing
 
@@ -13,7 +14,7 @@ def delay_print(s):
         time.sleep(0.05)
 
 # Create the class
-class Pokemon:
+class Actor:
     def __init__(self, name, types, moves, EVs, health='==================='):
         # save variables as attributes
         self.types = types
@@ -25,11 +26,11 @@ class Pokemon:
         self.bars = 20 # Amount of health bars
 
 
-    def fight(self, Player, Enemy):
-        # Allow two pokemon to fight each other
+    def fight(Player, Enemy):
+        # Allow two Actor to fight each other
 
         # Print fight information
-        print("-----POKEMONE BATTLE-----")
+        print("---- ActorE BATTLE-----")
         print(f"\n{Player.name}") #Player. (Whenever you see Player. is )
         print("TYPE/", Player.types)
         print("ATTACK/", Player.attack)
@@ -73,9 +74,9 @@ class Pokemon:
 
 
         # Now for the actual fighting...
-        # Continue while pokemon still have health
+        # Continue while Actor still have health
         while (Player.bars > 0) and (Enemy.bars > 0):
-            # Print the health of each pokemon
+            # Print the health of each Actor
             print(f"\n{Player.name}\t\tHLTH\t{Player.health}")
             print(f"{Enemy.name}\t\tHLTH\t{Enemy.health}\n")
 
@@ -100,7 +101,7 @@ class Pokemon:
             print(f"{Enemy.name}\t\tHLTH\t{Enemy.health}\n")
             time.sleep(.5)
 
-            # Check to see if Pokemon fainted
+            # Check to see if Actor fainted
             if Enemy.bars <= 0:
                 delay_print("\n..." + Enemy.name + ' fainted.')
                 break
@@ -110,7 +111,7 @@ class Pokemon:
             print(f"Go {Enemy.name}!")
             for i, x in enumerate(Enemy.moves):
                 print(f"{i+1}.", x)
-            index = int(input('Pick a move: '))
+            index = random.randint(1, 4)
             delay_print(f"\n{Enemy.name} used {Enemy.moves[index-1]}!")
             time.sleep(1)
             delay_print(string_2_attack)
@@ -128,7 +129,7 @@ class Pokemon:
             print(f"{Enemy.name}\t\tHLTH\t{Enemy.health}\n")
             time.sleep(.5)
 
-            # Check to see if Pokemon fainted
+            # Check to see if Actor fainted
             if Player.bars <= 0:
                 delay_print("\n..." + Player.name + ' fainted.')
                 break
@@ -142,18 +143,13 @@ class Pokemon:
 
 
 if __name__ == '__main__':
-    #Create Pokemon
-    Charizard = Pokemon('Charizard', 'Fire', ['Flamethrower', 'Fly', 'Blast Burn', 'Fire Punch'], {'ATTACK':12, 'DEFENSE': 8})
-    Blastoise = Pokemon('Blastoise', 'Water', ['Water Gun', 'Bubblebeam', 'Hydro Pump', 'Surf'],{'ATTACK': 10, 'DEFENSE':10})
-    Venusaur = Pokemon('Venusaur', 'Grass', ['Vine Wip', 'Razor Leaf', 'Earthquake', 'Frenzy Plant'],{'ATTACK':8, 'DEFENSE':12})
+    #Create Actor
+    enemy1 = Actor('Enemy', 'Fire', ['Flamethrower', 'Fly', 'Blast Burn', 'Fire Punch'], {'ATTACK': 4, 'DEFENSE': 2})
+    enemy2 = Actor('Enemy', 'Water', ['Water Gun', 'Bubblebeam', 'Hydro Pump', 'Surf'],{'ATTACK': 5, 'DEFENSE':10})
+    enemy3 = Actor('Venusaur', 'Grass', ['Vine Wip', 'Razor Leaf', 'Earthquake', 'Frenzy Plant'],{'ATTACK':8, 'DEFENSE':12})
 
-    Charmander = Pokemon('Charmander', 'Fire', ['Ember', 'Scratch', 'Tackle', 'Fire Punch'],{'ATTACK':4, 'DEFENSE':2})
-    Squirtle = Pokemon('Squirtle', 'Water', ['Bubblebeam', 'Tackle', 'Headbutt', 'Surf'],{'ATTACK': 3, 'DEFENSE':3})
-    Bulbasaur = Pokemon('Bulbasaur', 'Grass', ['Vine Wip', 'Razor Leaf', 'Tackle', 'Leech Seed'],{'ATTACK':2, 'DEFENSE':4})
-
-    Charmeleon = Pokemon('Charmeleon', 'Fire', ['Ember', 'Scratch', 'Flamethrower', 'Fire Punch'],{'ATTACK':6, 'DEFENSE':5})
-    Wartortle = Pokemon('Wartortle', 'Water', ['Bubblebeam', 'Water Gun', 'Headbutt', 'Surf'],{'ATTACK': 5, 'DEFENSE':5})
-    Ivysaur = Pokemon('Ivysaur\t', 'Grass', ['Vine Wip', 'Razor Leaf', 'Bullet Seed', 'Leech Seed'],{'ATTACK':4, 'DEFENSE':6})
+    player = Actor('Player', 'Fire', ['Ember', 'Scratch', 'Tackle', 'Fire Punch'],{'ATTACK':4, 'DEFENSE':2})
+    
 
 
-    Charizard.fight(Blastoise) # Get them to fight
+    player.fight(enemy2) # Get them to fight
