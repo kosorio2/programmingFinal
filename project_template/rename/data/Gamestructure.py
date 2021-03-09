@@ -16,8 +16,8 @@ def delay_print(s):
 class Pokemon:
     def __init__(self, name, types, moves, EVs, health='==================='):
         # save variables as attributes
-        self.name = name
         self.types = types
+        self.name = name
         self.moves = moves
         self.attack = EVs['ATTACK']
         self.defense = EVs['DEFENSE']
@@ -25,112 +25,112 @@ class Pokemon:
         self.bars = 20 # Amount of health bars
 
 
-    def fight(self, Pokemon2):
+    def fight(self, Player, Enemy):
         # Allow two pokemon to fight each other
 
         # Print fight information
         print("-----POKEMONE BATTLE-----")
-        print(f"\n{self.name}")
-        print("TYPE/", self.types)
-        print("ATTACK/", self.attack)
-        print("DEFENSE/", self.defense)
-        print("LVL/", 3*(1+np.mean([self.attack,self.defense])))
+        print(f"\n{Player.name}") #Player. (Whenever you see Player. is )
+        print("TYPE/", Player.types)
+        print("ATTACK/", Player.attack)
+        print("DEFENSE/", Player.defense)
+        print("LVL/", 3*(1+np.mean([Player.attack,Player.defense])))
         print("\nVS")
-        print(f"\n{Pokemon2.name}")
-        print("TYPE/", Pokemon2.types)
-        print("ATTACK/", Pokemon2.attack)
-        print("DEFENSE/", Pokemon2.defense)
-        print("LVL/", 3*(1+np.mean([Pokemon2.attack,Pokemon2.defense])))
+        print(f"\n{Enemy.name}") #Enemy 
+        print("TYPE/", Enemy.types)
+        print("ATTACK/", Enemy.attack)
+        print("DEFENSE/", Enemy.defense)
+        print("LVL/", 3*(1+np.mean([Enemy.attack,Enemy.defense])))
 
         time.sleep(2)
 
         # Consider type advantages
         version = ['Fire', 'Water', 'Grass']
         for i,k in enumerate(version):
-            if self.types == k:
+            if Player.types == k:
                 # Both are same type
-                if Pokemon2.types == k:
+                if Enemy.types == k:
                     string_1_attack = '\nIts not very effective...'
                     string_2_attack = '\nIts not very effective...'
 
-                # Pokemon2 is STRONG
-                if Pokemon2.types == version[(i+1)%3]:
-                    Pokemon2.attack *= 2
-                    Pokemon2.defense *= 2
-                    self.attack /= 2
-                    self.defense /= 2
+                # Enemy is STRONG
+                if Enemy.types == version[(i+1)%3]:
+                    Enemy.attack *= 2
+                    Enemy.defense *= 2
+                    Player.attack /= 2
+                    Player.defense /= 2
                     string_1_attack = '\nIts not very effective...'
                     string_2_attack = '\nIts super effective!'
 
-                # Pokemon2 is WEAK
-                if Pokemon2.types == version[(i+2)%3]:
-                    self.attack *= 2
-                    self.defense *= 2
-                    Pokemon2.attack /= 2
-                    Pokemon2.defense /= 2
+                # Enemy is WEAK
+                if Enemy.types == version[(i+2)%3]:
+                    Player.attack *= 2
+                    Player.defense *= 2
+                    Enemy.attack /= 2
+                    Enemy.defense /= 2
                     string_1_attack = '\nIts super effective!'
                     string_2_attack = '\nIts not very effective...'
 
 
         # Now for the actual fighting...
         # Continue while pokemon still have health
-        while (self.bars > 0) and (Pokemon2.bars > 0):
+        while (Player.bars > 0) and (Enemy.bars > 0):
             # Print the health of each pokemon
-            print(f"\n{self.name}\t\tHLTH\t{self.health}")
-            print(f"{Pokemon2.name}\t\tHLTH\t{Pokemon2.health}\n")
+            print(f"\n{Player.name}\t\tHLTH\t{Player.health}")
+            print(f"{Enemy.name}\t\tHLTH\t{Enemy.health}\n")
 
-            print(f"Go {self.name}!")
-            for i, x in enumerate(self.moves):
+            print(f"Go {Player.name}!")
+            for i, x in enumerate(Player.moves):
                 print(f"{i+1}.", x)
             index = int(input('Pick a move: '))
-            delay_print(f"\n{self.name} used {self.moves[index-1]}!")
+            delay_print(f"\n{Player.name} used {Player.moves[index-1]}!")
             time.sleep(1)
             delay_print(string_1_attack)
 
             # Determine damage
-            Pokemon2.bars -= self.attack
-            Pokemon2.health = ""
+            Enemy.bars -= Player.attack
+            Enemy.health = ""
 
             # Add back bars plus defense boost
-            for j in range(int(Pokemon2.bars+.1*Pokemon2.defense)):
-                Pokemon2.health += "="
+            for j in range(int(Enemy.bars+.1*Enemy.defense)):
+                Enemy.health += "="
 
             time.sleep(1)
-            print(f"\n{self.name}\t\tHLTH\t{self.health}")
-            print(f"{Pokemon2.name}\t\tHLTH\t{Pokemon2.health}\n")
+            print(f"\n{Player.name}\t\tHLTH\t{Player.health}")
+            print(f"{Enemy.name}\t\tHLTH\t{Enemy.health}\n")
             time.sleep(.5)
 
             # Check to see if Pokemon fainted
-            if Pokemon2.bars <= 0:
-                delay_print("\n..." + Pokemon2.name + ' fainted.')
+            if Enemy.bars <= 0:
+                delay_print("\n..." + Enemy.name + ' fainted.')
                 break
 
-            # Pokemon2s turn
+            # Enemys turn
 
-            print(f"Go {Pokemon2.name}!")
-            for i, x in enumerate(Pokemon2.moves):
+            print(f"Go {Enemy.name}!")
+            for i, x in enumerate(Enemy.moves):
                 print(f"{i+1}.", x)
             index = int(input('Pick a move: '))
-            delay_print(f"\n{Pokemon2.name} used {Pokemon2.moves[index-1]}!")
+            delay_print(f"\n{Enemy.name} used {Enemy.moves[index-1]}!")
             time.sleep(1)
             delay_print(string_2_attack)
 
             # Determine damage
-            self.bars -= Pokemon2.attack
-            self.health = ""
+            Player.bars -= Enemy.attack
+            Player.health = ""
 
             # Add back bars plus defense boost
-            for j in range(int(self.bars+.1*self.defense)):
-                self.health += "="
+            for j in range(int(Player.bars+.1*Player.defense)):
+                Player.health += "="
 
             time.sleep(1)
-            print(f"{self.name}\t\tHLTH\t{self.health}")
-            print(f"{Pokemon2.name}\t\tHLTH\t{Pokemon2.health}\n")
+            print(f"{Player.name}\t\tHLTH\t{Player.health}")
+            print(f"{Enemy.name}\t\tHLTH\t{Enemy.health}\n")
             time.sleep(.5)
 
             # Check to see if Pokemon fainted
-            if self.bars <= 0:
-                delay_print("\n..." + self.name + ' fainted.')
+            if Player.bars <= 0:
+                delay_print("\n..." + Player.name + ' fainted.')
                 break
 
         money = np.random.choice(5000)
