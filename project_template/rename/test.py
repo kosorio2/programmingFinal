@@ -68,19 +68,19 @@ class MyGame(arcade.Window):
 
         # Set up the player
         # Character image from kenney.nl
-        self.player_sprite = arcade.Sprite(":resources:images/space_shooter/playerLife1_orange.png",
+        self.player_sprite = arcade.Sprite("/project_template/rename/images/playerLife1_orange.png",
                                            SPRITE_SCALING_PLAYER)
         self.player_sprite.center_x = 50
         self.player_sprite.center_y = 50
         self.character_list.append(self.player_sprite)
         
-        self.enemy_sprite = arcade.Sprite(":resources:images/animated_characters/robot/robot_fall.png", 
+        self.enemy_sprite = arcade.Sprite("/project_template/rename/images/robot_fall.png", 
                                           SPRITE_SCALING_PLAYER)
         self.enemy_sprite.center_x = SCREEN_WIDTH - 90
         self.enemy_sprite.center_y = SCREEN_HEIGHT / 2
         self.character_list.append(self.enemy_sprite)
 
-        self.protagonist_sprite = arcade.Sprite(":resources:images/animated_characters/male_adventurer/maleAdventurer_idle.png", 
+        self.protagonist_sprite = arcade.Sprite("/project_template/rename/images/maleAdventurer_idle.png", 
                                                 SPRITE_SCALING_PLAYER)
         self.protagonist_sprite.center_x = 90
         self.protagonist_sprite.center_y = SCREEN_HEIGHT/2
@@ -89,7 +89,7 @@ class MyGame(arcade.Window):
         # Create the coins
         j = 0
         for i in starting_hand:
-            card = arcade.Sprite(":resources:images/cards/card" + str(i) + ".png", 0.5)
+            card = arcade.Sprite("/project_template/rename/images/card" + str(i) + ".png", 0.5)
             card.center_x = 200 + j
             card.center_y = 90
             j += 90
@@ -99,7 +99,7 @@ class MyGame(arcade.Window):
             self.additional_cards.append(self.choose_number(self.usedNumbers))
         
         for i in self.additional_cards:
-            card = arcade.Sprite(":resources:images/cards/card" + str(i) + ".png", 0.5)
+            card = arcade.Sprite("/project_template/rename/images/card" + str(i) + ".png", 0.5)
             card.center_x = 90
             card.center_y = 70
             self.deck.append(card)
@@ -108,7 +108,7 @@ class MyGame(arcade.Window):
 
             # Create the coin instance
             # Coin image from kenney.nl
-            coin = arcade.Sprite(":resources:images/items/coinGold.png",
+            coin = arcade.Sprite("/project_template/rename/images/card1.png",
                                  SPRITE_SCALING_COIN)
 
             # Position the coin
