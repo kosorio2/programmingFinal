@@ -1,5 +1,5 @@
 import random
-from data.Actors import Actor
+from rename.test import MyGame
 
 
 def main():
@@ -11,4 +11,8 @@ def main():
     Player = Actor('Charmander', 'Fire', ['Ember', 'Scratch', 'Tackle', 'Fire Punch'],{'ATTACK':4, 'DEFENSE':2})
     return Player
 
-print(Player)
+def run_game():
+    MyGame.main()
+
+if __name__ == "__main__":
+    run_game()
