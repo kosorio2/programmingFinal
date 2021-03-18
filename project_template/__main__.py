@@ -1,18 +1,21 @@
 import random
 from rename.test import MyGame
+# from Actor import Actor
 
 
 def main():
 
-    Enemy1 = Actor('Charizard', 'Fire', ['Flamethrower', 'Fly', 'Blast Burn', 'Fire Punch'], {'ATTACK':12, 'DEFENSE': 8})
-    Enemy2 = Actor('Blastoise', 'Water', ['Water Gun', 'Bubblebeam', 'Hydro Pump', 'Surf'],{'ATTACK': 10, 'DEFENSE':10})
-    Enemy3 = Actor('Venusaur', 'Grass', ['Vine Wip', 'Razor Leaf', 'Earthquake', 'Frenzy Plant'],{'ATTACK':8, 'DEFENSE':12})
+    # enemy1 = Actor('Blade Vonner', 'Enemy1', ['Fire Ball', 'Sword Attack', 'Double Strike', 'Face Punch'],{'ATTACK': 5, 'DEFENSE':10})
+    # enemy3 = Actor('Thorne Thornheart', 'Enemy1', ['Fire Ball', 'Sword Attack', 'Double Strike', 'Face Punch'],{'ATTACK':8, 'DEFENSE':12})
 
-    Player = Actor('Charmander', 'Fire', ['Ember', 'Scratch', 'Tackle', 'Fire Punch'],{'ATTACK':4, 'DEFENSE':2})
-    return Player
+    # player = Actor('Kim', 'Player', ['Fire Ball', 'Sword Attack', 'Double Strike', 'Face Punch'],{'ATTACK':2, 'DEFENSE':2})
+    
 
-def run_game():
-    MyGame.main()
 
-if __name__ == "__main__":
-    run_game()
+    # player.fight(enemy1) # Get them to fight
+
+    def run_game():
+        MyGame.main()
+
+    if __name__ == "__main__":
+        run_game()

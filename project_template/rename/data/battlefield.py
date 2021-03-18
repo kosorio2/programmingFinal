@@ -1,4 +1,4 @@
-from data.Actor import Actor 
+from Actor import Actor 
 import time
 import numpy as np
 import sys
@@ -126,3 +126,16 @@ class Battlefield(Actor):
 
         money = np.random.choice(5000)
         delay_print(f"\nOpponent paid you ${money}.\n")
+
+if __name__ == 'battlefield':
+    #Create Actor
+    enemy1 = Actor('Enemy', 'Fire', ['Flamethrower', 'Fly', 'Blast Burn', 'Fire Punch'], {'ATTACK': 4, 'DEFENSE': 2})
+    enemy2 = Actor('Enemy', 'Water', ['Water Gun', 'Bubblebeam', 'Hydro Pump', 'Surf'],{'ATTACK': 5, 'DEFENSE':10})
+    enemy3 = Actor('Venusaur', 'Grass', ['Vine Wip', 'Razor Leaf', 'Earthquake', 'Frenzy Plant'],{'ATTACK':8, 'DEFENSE':12})
+
+    player = Actor('Player', 'Fire', ['Ember', 'Scratch', 'Tackle', 'Fire Punch'],{'ATTACK':4, 'DEFENSE':2})
+    
+
+
+    player.fight(enemy2) # Get them to fight
+        

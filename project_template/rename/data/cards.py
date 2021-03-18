@@ -10,13 +10,59 @@ SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 SCREEN_TITLE = "Sprite Collect Coins Example"
 
+HEALTHBAR_WIDTH = 25
+HEALTHBAR_HEIGHT = 3
+HEALTHBAR_OFFSET_Y = -10
 
+HEALTH_NUMBER_OFFSET_X = -10
+HEALTH_NUMBER_OFFSET_Y = -25
+
+
+class SpriteWithHealth(arcade.Sprite):
+    """ Sprite with hit points """
+
+    def __init__(self, image, scale, max_health):
+        super().__init__(image, scale)
+
+        # Add extra attributes for health
+        self.max_health = max_health
+        self.cur_health = max_health
+
+    def draw_health_number(self):
+        """ Draw how many hit points we have """
+
+        health_string = f"{self.cur_health}/{self.max_health}"
+        arcade.draw_text(health_string,
+                         start_x=self.center_x + HEALTH_NUMBER_OFFSET_X,
+                         start_y=self.center_y + HEALTH_NUMBER_OFFSET_Y,
+                         font_size=12,
+                         color=arcade.color.WHITE)
+
+    def draw_health_bar(self):
+        """ Draw the health bar """
+
+        # Draw the 'unhealthy' background
+        if self.cur_health < self.max_health:
+            arcade.draw_rectangle_filled(center_x=self.center_x,
+                                         center_y=self.center_y + HEALTHBAR_OFFSET_Y,
+                                         width=HEALTHBAR_WIDTH,
+                                         height=3,
+                                         color=arcade.color.RED)
+
+        # Calculate width based on health
+        health_width = HEALTHBAR_WIDTH * (self.cur_health / self.max_health)
+
+        arcade.draw_rectangle_filled(center_x=self.center_x - 0.5 * (HEALTHBAR_WIDTH - health_width),
+                                     center_y=self.center_y - 10,
+                                     width=health_width,
+                                     height=HEALTHBAR_HEIGHT,
+                                     color=arcade.color.GREEN)
 class MyGame(arcade.Window):
     """ Our custom Window Class"""
-    def choose_number(self, usedNumbers):
+    def choose_number(self, usedNumbers, number_range):
         is_number_new = False
         while is_number_new == False:
-            whichOne = random.randint(0, 68)
+            whichOne = random.randint(0, number_range)
             for i in range(0, len(usedNumbers)):
                 if usedNumbers[i] == whichOne:
                     is_number_new = False
@@ -51,16 +97,16 @@ class MyGame(arcade.Window):
         """ Set up the game and initialize the variables. """
 
         # Sprite lists
-        self.character_list = arcade.SpriteList()
         self.coin_list = arcade.SpriteList()
         self.deck = arcade.SpriteList()
+        self.character_list = arcade.SpriteList()
         self.usedNumbers = [0]
         starting_hand = []
         self.additional_cards = []
         self.held_cards_original_position = []
         self.held_cards = []
         for i in range(5):
-            starting_hand.append(self.choose_number(self.usedNumbers))
+            starting_hand.append(self.choose_number(self.usedNumbers, 68))
         print(starting_hand)
 
         # Score
@@ -68,12 +114,6 @@ class MyGame(arcade.Window):
 
         # Set up the player
         # Character image from kenney.nl
-        self.player_sprite = arcade.Sprite(":resources:images/space_shooter/playerLife1_orange.png",
-                                           SPRITE_SCALING_PLAYER)
-        self.player_sprite.center_x = 50
-        self.player_sprite.center_y = 50
-        self.character_list.append(self.player_sprite)
-        
         self.enemy_sprite = arcade.Sprite(":resources:images/animated_characters/robot/robot_fall.png", 
                                           SPRITE_SCALING_PLAYER)
         self.enemy_sprite.center_x = SCREEN_WIDTH - 90
@@ -96,7 +136,7 @@ class MyGame(arcade.Window):
             self.deck.append(card)
         
         for i in range(5):
-            self.additional_cards.append(self.choose_number(self.usedNumbers))
+            self.additional_cards.append(self.choose_number(self.usedNumbers, 68))
         
         for i in self.additional_cards:
             card = arcade.Sprite(":resources:images/cards/card" + str(i) + ".png", 0.5)
@@ -118,6 +158,12 @@ class MyGame(arcade.Window):
             # Add the coin to the lists
             self.coin_list.append(coin)
 
+        self.player_sprite = arcade.Sprite(":resources:images/space_shooter/playerLife1_orange.png",
+                                    SPRITE_SCALING_PLAYER)
+        self.player_sprite.center_x = 50
+        self.player_sprite.center_y = 50
+        self.character_list.append(self.player_sprite)
+
     def on_mouse_press(self, x, y, button, key_modifiers):
         """ Called when the user presses a mouse button. """
 
@@ -136,13 +182,7 @@ class MyGame(arcade.Window):
             self.held_cards_original_position = [self.held_cards[0].position]
             # Put on top in drawing order
 
-    def on_mouse_motion(self, x: float, y: float, dx: float, dy: float):
-        """ User moves mouse """
 
-        # If we are holding cards, move them with the mouse
-        for card in self.held_cards:
-            card.center_x += dx
-            card.center_y += dy
 
     def on_mouse_release(self, x: float, y: float, button: int,
                          modifiers: int):
@@ -151,6 +191,25 @@ class MyGame(arcade.Window):
         # If we don't have any cards, who cares
         if len(self.held_cards) == 0:
             return
+
+        reset_position = True
+
+        hit_list = arcade.check_for_collision_with_list(self.held_cards[0], self.character_list)
+
+        print(hit_list)
+
+        if len(hit_list) > 1:
+            reset_position = False
+
+        if reset_position:
+            # Where-ever we were dropped, it wasn't valid. Reset the each card's position
+            # to its original spot.
+            for pile_index, card in enumerate(self.held_cards):
+                card.position = self.held_cards_original_position[pile_index]
+        else:
+            for card in self.held_cards:
+                card.center_x = SCREEN_WIDTH - 90
+                card.center_y = 90
 
         # We are no longer holding cards
         self.held_cards = []
@@ -172,6 +231,9 @@ class MyGame(arcade.Window):
         # Move the center of the player sprite to match the mouse x, y
         self.player_sprite.center_x = x
         self.player_sprite.center_y = y
+        for card in self.held_cards:
+            card.center_x += dx
+            card.center_y += dy
 
     def on_update(self, delta_time):
         """ Movement and game logic """
@@ -182,20 +244,26 @@ class MyGame(arcade.Window):
         self.deck.update()
 
         # Generate a list of all sprites that collided with the player.
-        coins_hit_list = arcade.check_for_collision_with_list(self.player_sprite, self.coin_list)
-
+        cards_hit_list = arcade.check_for_collision_with_list(self.deck[0], self.deck)
+        if len(cards_hit_list) == len(self.deck) - 1:
+            for card in cards_hit_list:
+                card.center_x = 90
+                card.center_y = 70
+            # for card in self.deck:
+            #     self.choose_number(self.deck, 68)    
+        
         # Loop through each colliding sprite, remove it, and add to the score.
-        for coin in coins_hit_list:
-            coin.remove_from_sprite_lists()
-            self.score += 1
+        # for coin in coins_hit_list:
+        #     coin.remove_from_sprite_lists()
+        #     self.score += 1
 
 
-def main():
-    """ Main method """
-    window = MyGame()
-    window.setup()
-    arcade.run()
+    def main():
+        """ Main method """
+        window = MyGame()
+        window.setup()
+        arcade.run()
 
 
-if __name__ == "__main__":
-    main()
+    if __name__ == "__main__":
+        main()
