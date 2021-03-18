@@ -15,13 +15,13 @@ def delay_print(s):
 
 # Create the class
 class Actor:
-    def __init__(self, name, types, moves, EVs, health='==================='):
+    def __init__(self, name, types, moves, attack, defense, health='==================='):
         # save variables as attributes
         self.types = types
         self.name = name
         self.moves = moves
-        self.attack = EVs['ATTACK']
-        self.defense = EVs['DEFENSE']
+        self.attack = attack['ATTACK']
+        self.defense = defense['DEFENSE']
         self.health = health
         self.bars = 20 # Amount of health bars
 
@@ -129,8 +129,8 @@ class Actor:
 if __name__ == '__main__':
     #Create Actor
  
-    enemy1 = Actor('Blade Vonner', 'Enemy1', ['Fire Ball', 'Sword Attack', 'Double Strike', 'Face Punch'],{'ATTACK': 5, 'DEFENSE':10})
-    enemy3 = Actor('Thorne Thornheart', 'Enemy1', ['Fire Ball', 'Sword Attack', 'Double Strike', 'Face Punch'],{'ATTACK':8, 'DEFENSE':12})
+    enemy1 = Actor('Blade Vonner', 'Enemy1', ['Fire Ball', 'Sword Attack', 'Double Strike', 'Face Punch'], {'ATTACK':2})
+    enemy3 = Actor('Thorne Thornheart', 'Enemy1', ['Fire Ball', 'Sword Attack', 'Double Strike', 'Face Punch'],{'ATTACK':2})
 
     player = Actor('Kim', 'Player', ['Fire Ball', 'Sword Attack', 'Double Strike', 'Face Punch'],{'ATTACK':2, 'DEFENSE':2})
     
