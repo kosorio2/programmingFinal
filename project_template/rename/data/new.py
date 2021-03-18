@@ -16,7 +16,7 @@ class Actor:
         # save variables as attributes
         self.types = types
         self.name = name
-        self.moves = moves
+        self.get_move_value = moves
         self.attack = attack['ATTACK']
         self.defense = defense['DEFENSE']
         self.health = health
@@ -27,12 +27,18 @@ class Actor:
                 'Sword Attack' : 4,
                 'Double Strike' : 3, 
                 'Face Punch': 5,
-                'Defense':3}
+                'Defense': 3}
 
-        for move in moves:
-            return (random.randint((moves[move]), 10))
+        list_conversion = list(moves.items())
+            
+  
+        random_move = random.choice(list_conversion)
 
-    print(get_move_value())
+        return(random_move[1])
+
+
+
+
 
     #def fight(Player, Enemy):
         # Allow two Actor to fight each other

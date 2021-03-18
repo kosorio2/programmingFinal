@@ -15,15 +15,27 @@ def delay_print(s):
 
 # Create the class
 class Actor:
-    def __init__(self, name, types, moves, attack, defense, health='==================='):
+    def __init__(self, name, types, moves, health='==================='):
         # save variables as attributes
         self.types = types
         self.name = name
-        self.moves = moves
-        self.attack = attack['ATTACK']
-        self.defense = defense['DEFENSE']
+        self.get_move_value = moves
         self.health = health
         self.bars = 20 # Amount of health bars
+
+    def get_move_value():
+        moves = {'Fire Ball' : 2, 
+                'Sword Attack' : 4,
+                'Double Strike' : 3, 
+                'Face Punch': 5,
+                'Defense': 3}
+
+        list_conversion = list(moves.items())
+            
+  
+        move = random.choice(list_conversion)
+
+        return(move[1])
 
 
     def fight(Player, Enemy):
@@ -40,8 +52,7 @@ class Actor:
         for i,k in enumerate(version):
                 # Enemy is STRONG
                 if Enemy.types == k:
-                    Enemy.attack *= 2
-                    Enemy.defense *= 2
+                    Enemy.moves*= 2
                     Player.attack /= 2
                     Player.defense /= 2
                     string_1_attack = '\nIts not very effective Player...'
@@ -49,8 +60,7 @@ class Actor:
 
                 # Enemy is WEAK
                 if Enemy.types == version[(i+1)%2]:
-                    Player.attack *= 2
-                    Player.defense *= 2
+                    Player.moves*= 2
                     Enemy.attack /= 2
                     Enemy.defense /= 2
                     string_1_attack = '\nIts super effective Player!'
