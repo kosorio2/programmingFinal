@@ -91,11 +91,14 @@ class MyGame(arcade.Window):
         # Don't show the mouse cursor
         self.set_mouse_visible(False)
 
-        arcade.set_background_color(arcade.color.AMAZON)
+        self.background = None 
+
+        # arcade.set_background_color(arcade.color.AMAZON)
 
     def setup(self):
         """ Set up the game and initialize the variables. """
 
+        self.background = arcade.load_texture(":data:images/fight_background_1.png")
         # Sprite lists
         self.coin_list = arcade.SpriteList()
         self.deck = arcade.SpriteList()
@@ -114,7 +117,7 @@ class MyGame(arcade.Window):
 
         # Set up the player
         # Character image from kenney.nl
-        self.enemy_sprite = arcade.Sprite(":data:imagesfighters_1", 
+        self.enemy_sprite = arcade.Sprite(":data:images/enemy_1.png", 
                                           SPRITE_SCALING_PLAYER)
         self.enemy_sprite.center_x = SCREEN_WIDTH - 90
         self.enemy_sprite.center_y = SCREEN_HEIGHT / 2
