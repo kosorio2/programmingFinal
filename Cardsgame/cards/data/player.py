@@ -67,7 +67,7 @@ def get_selection():
 
 def get_enemy_selection(health):
     sleep_time = random.randrange(2, 5)
-    print("....thinking....")
+    print("....Enemy's Turn....")
     time.sleep(sleep_time)
 
     if (health <= 35):
@@ -80,7 +80,7 @@ def get_enemy_selection(health):
     elif (health == 100):
         return random.randint(1, 2)
     else:
-        return random.randint(1, 3)
+        return random.randint(1, 6)
 
 
 def play_round(enemy, avatar):
@@ -103,9 +103,9 @@ def play_round(enemy, avatar):
         if (current_player == avatar):
             print("Available attacks:")
             print("1) Electrocute - Causes moderate damage.")
-            print("2) Wild Swing - high or low damage, "
+            print("2) Face Swing - high or low damage, "
                   "depending on your luck!")
-            print("3) Nature's Kiss - Restores a moderate amount of health.")
+            print("3) Health Booster - Restores a moderate amount of health.")
             print("4) Atomic Buster - It can take down your enemy's health by 20 points or completely fail.")
             print("5) Spear Throw - Goes straight to your enemy's shoulder (Damage is 15) or land in your feet (Damage 5).")
             move = get_selection()
@@ -119,7 +119,7 @@ def play_round(enemy, avatar):
             else:
                 avatar.calculate_damage(damage, enemy.name.capitalize())
         elif (move == 2):
-            damage = random.randrange(10, 35)
+            damage = random.randrange(15, 35)
             if (current_player == avatar):
                 enemy.calculate_damage(damage, avatar.name.capitalize())
             else:
