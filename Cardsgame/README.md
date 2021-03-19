@@ -15,11 +15,10 @@ root                    (project root folder)
 +-- rename              [src code files - rename for project] TBD... This will be rename after we decide the name of the game
   +-- assets            (program asset files) Images,  backgrounds, and additional files of our game. 
   +-- data              (program data files)
+                          menu
+                          cards
+                          player
                           init
-                          Actor
-                          Cards
-                          GameStructure
-                          more coming...
   +-- __init__.py       (python package file)
   +-- __main__.py       (entry point for program)
 +-- LICENSE             (license file)
@@ -29,7 +28,7 @@ root                    (project root folder)
 ## Required Technologies
 ---
 Python 
-Libraries such as random, arcade, NumP
+Libraries such as random, arcade, NumPy, Sys
 
 
 ## Authors
