@@ -26,10 +26,10 @@ class Player():
 
     
         if (damage_amount > self.health):
-            overkill = abs(self.health - damage_amount)
-            points = overkill
+            kill = abs(self.health - damage_amount)
+            points = kill
             self.health = 0
-            if (overkill > 0):
+            if (points > 0):
                 print(f"{player} takes fatal damage from {enemy}, with {points} overkill!")
             else:
                 print(f"{player} takes fatal damage from {enemy}!")
