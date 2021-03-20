@@ -117,8 +117,7 @@ class MyGame(arcade.Window):
 
         # Set up the player
         # Character image from kenney.nl
-        self.enemy_sprite = arcade.Sprite("project_template/rename/images/robot_fall.png", 
-        self.enemy_sprite = arcade.Sprite(":data:imagesfighters_1", 
+        self.enemy_sprite = arcade.Sprite("project_template/rename/images/robot_fall.png", SPRITE_SCALING_PLAYER)
         self.enemy_sprite = arcade.Sprite(":data:images/enemy_1.png", 
                                           SPRITE_SCALING_PLAYER)
         self.enemy_sprite.center_x = SCREEN_WIDTH - 90
