@@ -1,62 +1,22 @@
+from program_files.card import Card
+from program_files.cursor import Cursor
+from program_files.enemy import Enemy
+from program_files.player import Player
+
 import random
 import arcade
 
 # --- Constants ---
 SPRITE_SCALING_PLAYER = 2.0
+SPRITE_SCALING_CURSOR = .5
 SPRITE_SCALING_COIN = .25
-COIN_COUNT = 0
+COIN_COUNT = 2
 
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
-SCREEN_TITLE = "Sprite Collect Coins Example"
-
-HEALTHBAR_WIDTH = 25
-HEALTHBAR_HEIGHT = 3
-HEALTHBAR_OFFSET_Y = -10
-
-HEALTH_NUMBER_OFFSET_X = -10
-HEALTH_NUMBER_OFFSET_Y = -25
+SCREEN_WIDTH = 1200
+SCREEN_HEIGHT = 750
+SCREEN_TITLE = "Luck of the Draw"
 
 
-class SpriteWithHealth(arcade.Sprite):
-    """ Sprite with hit points """
-
-    def __init__(self, image, scale, max_health):
-        super().__init__(image, scale)
-
-        # Add extra attributes for health
-        self.max_health = max_health
-        self.cur_health = max_health
-
-    def draw_health_number(self):
-        """ Draw how many hit points we have """
-
-        health_string = f"{self.cur_health}/{self.max_health}"
-        arcade.draw_text(health_string,
-                         start_x=self.center_x + HEALTH_NUMBER_OFFSET_X,
-                         start_y=self.center_y + HEALTH_NUMBER_OFFSET_Y,
-                         font_size=12,
-                         color=arcade.color.WHITE)
-
-    def draw_health_bar(self):
-        """ Draw the health bar """
-
-        # Draw the 'unhealthy' background
-        if self.cur_health < self.max_health:
-            arcade.draw_rectangle_filled(center_x=self.center_x,
-                                         center_y=self.center_y + HEALTHBAR_OFFSET_Y,
-                                         width=HEALTHBAR_WIDTH,
-                                         height=3,
-                                         color=arcade.color.RED)
-
-        # Calculate width based on health
-        health_width = HEALTHBAR_WIDTH * (self.cur_health / self.max_health)
-
-        arcade.draw_rectangle_filled(center_x=self.center_x - 0.5 * (HEALTHBAR_WIDTH - health_width),
-                                     center_y=self.center_y - 10,
-                                     width=health_width,
-                                     height=HEALTHBAR_HEIGHT,
-                                     color=arcade.color.GREEN)
 class MyGame(arcade.Window):
     """ Our custom Window Class"""
     def choose_number(self, usedNumbers, number_range):
@@ -76,6 +36,11 @@ class MyGame(arcade.Window):
         """ Initializer """
         # Call the parent class initializer
         super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
+        # self.card = Card()
+        # self.cursor = Cursor()
+        # self.enemy = Enemy()
+        # self.player = Player()
+        self.game_over = False
 
         # Variables that will hold sprite lists
         self.character_list = None
@@ -83,22 +48,22 @@ class MyGame(arcade.Window):
         self.deck = None
         self.held_cards_original_position = None
         self.held_cards = None
+        self.cards_played = 0
+        self.already_went = 0
 
         # Set up the player info
-        self.player_sprite = None
+        self.cursor_sprite = None
         self.score = 0
 
         # Don't show the mouse cursor
         self.set_mouse_visible(False)
 
-        self.background = None 
-
-        # arcade.set_background_color(arcade.color.AMAZON)
+        self.background = None
+        self.game_over_screen = None
 
     def setup(self):
         """ Set up the game and initialize the variables. """
 
-        self.background = arcade.load_texture(":data:images/fight_background_1.png")
         # Sprite lists
         self.coin_list = arcade.SpriteList()
         self.deck = arcade.SpriteList()
@@ -112,30 +77,15 @@ class MyGame(arcade.Window):
             starting_hand.append(self.choose_number(self.usedNumbers, 68))
         print(starting_hand)
 
-        # Score
-        self.score = 0
-
-        # Set up the player
-        # Character image from kenney.nl
-        self.enemy_sprite = arcade.Sprite("project_template/rename/images/robot_fall.png", SPRITE_SCALING_PLAYER)
-        self.enemy_sprite = arcade.Sprite(":data:images/enemy_1.png", 
-                                          SPRITE_SCALING_PLAYER)
-        self.enemy_sprite.center_x = SCREEN_WIDTH - 90
-        self.enemy_sprite.center_y = SCREEN_HEIGHT / 2
-        self.character_list.append(self.enemy_sprite)
-
-        self.protagonist_sprite = arcade.Sprite("project_template/rename/images/maleAdventurer_idle.png", 
-                                                SPRITE_SCALING_PLAYER)
-        self.protagonist_sprite.center_x = 90
-        self.protagonist_sprite.center_y = SCREEN_HEIGHT/2
-        self.character_list.append(self.protagonist_sprite)
+        self.background = arcade.load_texture("z_images/background.png")
+        self.game_over_screen = arcade.load_texture("z_images/game_over.png")
 
         # Create the coins
         j = 0
         for i in starting_hand:
-            card = arcade.Sprite("project_template/rename/images/card" + str(i) + ".png", 0.5)
+            card = Card("z_images/card" + str(i) + ".png", 0.5)
             card.center_x = 200 + j
-            card.center_y = 90
+            card.center_y = SCREEN_HEIGHT - 90
             j += 90
             self.deck.append(card)
         
@@ -143,30 +93,42 @@ class MyGame(arcade.Window):
             self.additional_cards.append(self.choose_number(self.usedNumbers, 68))
         
         for i in self.additional_cards:
-            card = arcade.Sprite("project_template/rename/images/card" + str(i) + ".png", 0.5)
+            card = Card("z_images/card" + str(i) + ".png", 0.5)
             card.center_x = 90
-            card.center_y = 70
+            card.center_y = SCREEN_HEIGHT - 70
             self.deck.append(card)
 
         for i in range(COIN_COUNT):
 
             # Create the coin instance
             # Coin image from kenney.nl
-            coin = arcade.Sprite("project_template/rename/images/card1.png",
-                                 SPRITE_SCALING_COIN)
-
-            # Position the coin
-            coin.center_x = random.randrange(SCREEN_WIDTH)
-            coin.center_y = random.randrange(SCREEN_HEIGHT)
+            if i == 1:
+                coin = arcade.Sprite("z_images/card11.png", 0.54)
+                coin.center_x = SCREEN_WIDTH - 90
+                coin.center_y = SCREEN_HEIGHT - 70
+            else:
+                coin = arcade.Sprite("z_images/card1.png", 0.54)
+                coin.center_x = 90
+                coin.center_y = SCREEN_HEIGHT - 70
 
             # Add the coin to the lists
             self.coin_list.append(coin)
 
-        self.player_sprite = arcade.Sprite("project_template/rename/images/playerLife1_orange.png",
-                                    SPRITE_SCALING_PLAYER)
-        self.player_sprite.center_x = 50
-        self.player_sprite.center_y = 50
-        self.character_list.append(self.player_sprite)
+        self.enemy_sprite = Enemy("z_images/Enemy.png", SPRITE_SCALING_CURSOR)
+        self.enemy_sprite.center_x = SCREEN_WIDTH - 180
+        self.enemy_sprite.center_y = 180
+        self.character_list.append(self.enemy_sprite)
+
+        self.protagonist_sprite = Player("z_images/maleAdventurer_idle.png", SPRITE_SCALING_PLAYER)
+        self.protagonist_sprite.center_x = 90
+        self.protagonist_sprite.center_y = 180
+        self.character_list.append(self.protagonist_sprite)
+
+        self.cursor_sprite = Cursor("z_images/Cursor.png",
+                                SPRITE_SCALING_CURSOR)
+        self.cursor_sprite.center_x = 50
+        self.cursor_sprite.center_y = 50
+        self.character_list.append(self.cursor_sprite)
 
     def on_mouse_press(self, x, y, button, key_modifiers):
         """ Called when the user presses a mouse button. """
@@ -200,20 +162,38 @@ class MyGame(arcade.Window):
 
         hit_list = arcade.check_for_collision_with_list(self.held_cards[0], self.character_list)
 
-        print(hit_list)
+        effect = self.held_cards[0].get_effect()
+        
 
         if len(hit_list) > 1:
             reset_position = False
 
         if reset_position:
-            # Where-ever we were dropped, it wasn't valid. Reset the each card's position
+            # Where-ever we were dropped, it wasn't valid. Reset each card's position
             # to its original spot.
             for pile_index, card in enumerate(self.held_cards):
                 card.position = self.held_cards_original_position[pile_index]
         else:
             for card in self.held_cards:
                 card.center_x = SCREEN_WIDTH - 90
-                card.center_y = 90
+                card.center_y = SCREEN_HEIGHT - 90
+            for character in hit_list:
+                if effect[0] == "Attack":
+                    character.do_damage(effect[1])
+                    self.cards_played = self.cards_played + 1
+                    self.already_went = 1
+                    print(self.already_went)
+                elif effect[0] == "Defend" and character.is_enemy() == False:
+                    character.add_shield(effect[1])
+                    self.cards_played = self.cards_played + 1
+                    self.already_went = 1
+                elif effect[0] == "Heal" and character.is_enemy() == False:
+                    character.add_health(effect[1])
+                    self.cards_played = self.cards_played + 1
+                    self.already_went = 1
+                else:
+                    for pile_index, card in enumerate(self.held_cards):
+                        card.position = self.held_cards_original_position[pile_index]
 
         # We are no longer holding cards
         self.held_cards = []
@@ -221,20 +201,29 @@ class MyGame(arcade.Window):
     def on_draw(self):
         """ Draw everything """
         arcade.start_render()
+        arcade.draw_lrwh_rectangle_textured(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, self.background)
         self.coin_list.draw()
-        self.character_list.draw()
         self.deck.draw()
-
+        self.character_list.draw()
+        
+        for card in self.deck:
+            output = card.effect_string()
+            arcade.draw_text(output, card.center_x - 20, card.center_y - 80, arcade.color.BLACK, 14)
         # Put the text on the screen.
-        output = f"Score: {self.score}"
-        arcade.draw_text(output, 10, 20, arcade.color.WHITE, 14)
+        for character in self.character_list:
+            if character.is_character() == True:
+                output = f"Health: {character.get_health()}\nShield: {character.get_shield()}"
+                arcade.draw_text(output, character.center_x - 40, character.center_y + 125, arcade.color.WHITE, 14)
+        if self.game_over == True:
+            arcade.draw_lrwh_rectangle_textured(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, self.background)
 
     def on_mouse_motion(self, x, y, dx, dy):
         """ Handle Mouse Motion """
 
         # Move the center of the player sprite to match the mouse x, y
-        self.player_sprite.center_x = x
-        self.player_sprite.center_y = y
+
+        self.cursor_sprite.center_x = x
+        self.cursor_sprite.center_y = y
         for card in self.held_cards:
             card.center_x += dx
             card.center_y += dy
@@ -249,10 +238,29 @@ class MyGame(arcade.Window):
 
         # Generate a list of all sprites that collided with the player.
         cards_hit_list = arcade.check_for_collision_with_list(self.deck[0], self.deck)
+
         if len(cards_hit_list) == len(self.deck) - 1:
             for card in cards_hit_list:
                 card.center_x = 90
-                card.center_y = 70
+                card.center_y = SCREEN_HEIGHT - 70
+
+        for character in self.character_list:
+            if character.get_health() <= 0:
+                self.game_over = True
+        
+
+        if self.cards_played % 3 == 0 and self.cards_played > 0 and self.already_went == 1:
+            self.enemy_sprite.reset_shield()
+            self.already_went = self.already_went + 1
+            # print(self.already_went)
+            intent = self.enemy_sprite.get_intent()
+            if intent == "attack":
+                self.protagonist_sprite.do_damage(self.enemy_sprite.get_value())
+            elif intent == "defend":
+                self.enemy_sprite.add_shield(self.enemy_sprite.get_value())
+            elif intent == "heal":
+                self.enemy_sprite.add_health(self.enemy_sprite.get_value())
+            self.protagonist_sprite.reset_shield()
             # for card in self.deck:
             #     self.choose_number(self.deck, 68)    
         
