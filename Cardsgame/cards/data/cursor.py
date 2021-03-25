@@ -1,4 +1,4 @@
-from program_files.character import Character
+from character import Character
 
 class Cursor(Character):
     def __init__(self, file, size):

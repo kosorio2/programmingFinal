@@ -1,4 +1,4 @@
-from program_files.character import Character
+from character import Character
 import random
 
 class Enemy(Character):

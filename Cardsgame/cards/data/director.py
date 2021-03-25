@@ -1,7 +1,7 @@
-from program_files.card import Card
-from program_files.cursor import Cursor
-from program_files.enemy import Enemy
-from program_files.player import Player
+from card import Card
+from cursor import Cursor
+from enemy import Enemy
+from player import Player
 
 import random
 import arcade
