@@ -1,4 +1,4 @@
-from program_files.director import MyGame
+from director import MyGame
 
 def main():
     MyGame.main()

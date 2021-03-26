@@ -1,4 +1,5 @@
 from director import MyGame
+import arcade
 
 def main():
     MyGame.main()

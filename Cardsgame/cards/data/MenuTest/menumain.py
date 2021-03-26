@@ -4,15 +4,14 @@ import arcade
 
 g = Game()
 
+g.setup()
+
 while g.running:
     g.curr_menu.display_menu()
     g.game_loop()
+    # while g.setup():
+        
     
-    def main():
-        """ Main method """
-        window = MySound()
-        window.setup()
-        arcade.run()
-
-    if __name__ == "__main__":
-        main()
+    
+          
+    

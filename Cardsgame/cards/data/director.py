@@ -77,7 +77,7 @@ class MyGame(arcade.Window):
             starting_hand.append(self.choose_number(self.usedNumbers, 68))
         print(starting_hand)
 
-        self.background = arcade.load_texture("z_images/background.png")
+        self.background = arcade.load_texture("z_images/background2.png")
         self.game_over_screen = arcade.load_texture("z_images/game_over.png")
 
         # Create the coins
