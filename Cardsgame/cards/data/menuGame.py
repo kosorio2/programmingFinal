@@ -2,9 +2,9 @@ import pygame
 from menu import *
 import arcade
 import time 
-from data.director import 
+from director import MyGame
 
-
+#We need to import Game and delete game 
 MUSIC_VOLUME = 0.5
 
 class Game():
@@ -15,13 +15,12 @@ class Game():
         self.DISPLAY_W, self.DISPLAY_H = 480, 270
         self.display = pygame.Surface((self.DISPLAY_W,self.DISPLAY_H))
         self.window = pygame.display.set_mode(((self.DISPLAY_W,self.DISPLAY_H)))
-        self.font_name = '8-BIT WONDER.TTF'
         self.font_name = pygame.font.get_default_font()
         self.BLACK, self.WHITE = (0, 0, 0), (255, 255, 255)
         self.main_menu = MainMenu(self)
         self.options = OptionsMenu(self)
         self.credits = CreditsMenu(self)
-
+    
 
         self.curr_menu = self.main_menu
         self.music_list = []
@@ -62,15 +61,17 @@ class Game():
         # Play the song
         self.play_song()
 
+    def main():
+        MyGame.main()
+
     def game_loop(self):
         while self.playing:
             self.check_events()
             if self.START_KEY:
                 self.playing= False
-            # else:
-                
             self.display.fill(self.BLACK)
-            self.draw_text('Thanks for Playing', 20, self.DISPLAY_W/2, self.DISPLAY_H/2)
+            MyGame.main()
+            # self.draw_text('Thanks for Playing', 20, self.DISPLAY_W/2, self.DISPLAY_H/2)
             self.window.blit(self.display, (0,0))
             pygame.display.update()
             self.reset_keys()

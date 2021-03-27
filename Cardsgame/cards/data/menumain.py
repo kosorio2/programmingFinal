@@ -1,4 +1,4 @@
-from game import Game
+from menuGame import Game
 from background_sound import MySound
 import arcade
 
