@@ -189,22 +189,31 @@ class MyGame(arcade.Window):
                     character.do_damage(effect[1])
                     self.cards_played = self.cards_played + 1
                     self.already_went = 1
+
+                    self.used_cards.append(self.held_cards[0].get_card_number())
+                    self.deck_numbers.append(self.held_cards[0].get_card_number())
+                    self.held_cards[0].kill()
                 elif effect[0] == "Defend" and character.is_enemy() == False:
                     self.protagonist_sprite.set_defend()
                     character.add_shield(effect[1])
                     self.cards_played = self.cards_played + 1
                     self.already_went = 1
+
+                    self.used_cards.append(self.held_cards[0].get_card_number())
+                    self.deck_numbers.append(self.held_cards[0].get_card_number())
+                    self.held_cards[0].kill()
                 elif effect[0] == "Heal" and character.is_enemy() == False:
                     self.protagonist_sprite.set_heal()
                     character.add_health(effect[1])
                     self.cards_played = self.cards_played + 1
                     self.already_went = 1
+
+                    self.used_cards.append(self.held_cards[0].get_card_number())
+                    self.deck_numbers.append(self.held_cards[0].get_card_number())
+                    self.held_cards[0].kill()
                 else:
                     for pile_index, card in enumerate(self.held_cards):
                         card.position = self.held_cards_original_position[pile_index]
-            self.used_cards.append(self.held_cards[0].get_card_number())
-            self.deck_numbers.append(self.held_cards[0].get_card_number())
-            self.held_cards[0].kill()
 
         # We are no longer holding cards
         self.held_cards = []
@@ -239,8 +248,8 @@ class MyGame(arcade.Window):
 
         # Move the center of the player sprite to match the mouse x, y
 
-        self.cursor_sprite.center_x = x
-        self.cursor_sprite.center_y = y
+        self.cursor_sprite.center_x = x + 22
+        self.cursor_sprite.center_y = y - 27
         for card in self.held_cards:
             card.center_x += dx
             card.center_y += dy

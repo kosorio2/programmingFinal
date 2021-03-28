@@ -16,9 +16,9 @@ class Card(arcade.Sprite):
             number = 2
         card = ["Attack", "Defend", "Heal"]
         self.card_type = card[number]
-        power = 7
+        power = random.randint(5, 10)
         if number == 2:
-            power = 5
+            power = random.randint(3, 7)
         self.effect = [card[number], power]
         self.in_hand = False
         if self.effect[0] == "Attack":
