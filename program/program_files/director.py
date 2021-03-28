@@ -8,6 +8,7 @@ import arcade
 
 # --- Constants ---
 SPRITE_SCALING_PLAYER = 1.0
+ENEMY_SPRITE_SCALING = 1.0
 SPRITE_SCALING_CURSOR = .5
 SPRITE_SCALING_COIN = .25
 COIN_COUNT = 2
@@ -119,9 +120,9 @@ class MyGame(arcade.Window):
             # Add the coin to the lists
             self.coin_list.append(coin)
 
-        self.enemy_sprite = Enemy("z_images/Enemy.png", SPRITE_SCALING_CURSOR)
-        self.enemy_sprite.center_x = SCREEN_WIDTH - 180
-        self.enemy_sprite.center_y = 180
+        self.enemy_sprite = Enemy("z_images/Enemy.png", ENEMY_SPRITE_SCALING)
+        self.enemy_sprite.center_x = SCREEN_WIDTH - 225
+        self.enemy_sprite.center_y = 250
         self.character_list.append(self.enemy_sprite)
 
         self.protagonist_sprite = Player("z_images/maleAdventurer_idle.png", SPRITE_SCALING_PLAYER)
@@ -201,11 +202,11 @@ class MyGame(arcade.Window):
                 else:
                     for pile_index, card in enumerate(self.held_cards):
                         card.position = self.held_cards_original_position[pile_index]
+            self.used_cards.append(self.held_cards[0].get_card_number())
+            self.deck_numbers.append(self.held_cards[0].get_card_number())
+            self.held_cards[0].kill()
 
         # We are no longer holding cards
-        self.used_cards.append(self.held_cards[0].get_card_number())
-        self.deck_numbers.append(self.held_cards[0].get_card_number())
-        self.held_cards[0].kill()
         self.held_cards = []
 
     def on_draw(self):
@@ -253,13 +254,14 @@ class MyGame(arcade.Window):
         self.deck.update()
         self.character_list.update()
         self.cursor_list.update()
-        if self.protagonist_sprite.get_health() <= 0:
-            self.protagonist_sprite.set_dead()
 
         # Generate a list of all sprites that collided with the player.
         cards_hit_list = arcade.check_for_collision_with_list(self.deck[0], self.deck)
 
-        self.protagonist_sprite.next_idle()
+        for character in self.character_list:
+            if character.get_health() <= 0:
+                character.set_dead()
+            character.next_idle()
 
         if len(cards_hit_list) == len(self.deck) - 1:
             for card in cards_hit_list:
@@ -306,10 +308,24 @@ class MyGame(arcade.Window):
             intent = self.enemy_sprite.get_intent()
             if intent == "attack":
                 self.protagonist_sprite.do_damage(self.enemy_sprite.get_value())
+                for character in self.character_list:
+                    if character.is_enemy():
+                        character.set_attack()
             elif intent == "defend":
                 self.enemy_sprite.add_shield(self.enemy_sprite.get_value())
+                for character in self.character_list:
+                    if character.is_enemy():
+                        character.set_defend()
             elif intent == "heal":
                 self.enemy_sprite.add_health(self.enemy_sprite.get_value())
+                for character in self.character_list:
+                    if character.is_enemy():
+                        character.set_heal()
+            elif intent == "strengthen":
+                self.enemy_sprite.add_strength()
+                for character in self.character_list:
+                    if character.is_enemy():
+                        character.set_strengthen()
             self.protagonist_sprite.reset_shield()
             # for card in self.deck:
             #     self.choose_number(self.deck, 68)    

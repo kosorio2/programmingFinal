@@ -10,6 +10,10 @@ class Character(arcade.Sprite):
         self.take_damage_animation = []
         self.death_animation = []
         self.next_animation = 0
+        self.mode = 0
+        self.counter = 0
+        self.turn = 0
+        self.first_time = True
 
     def next_image_idle(self):
         self.filename = self.idle_animation[self.next_animation % len(self.idle_animation)]

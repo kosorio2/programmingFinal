@@ -13,10 +13,6 @@ class Player(Character):
         self.death_animation = []
         for i in range(15):
             self.death_animation.append(f"z_images/wraith/Wraith_01_Dying_00{i}")
-        self.counter = 0
-        self.turn = 0
-        self.mode = 0
-        self.first_time = True
 
     def get_health(self):
         return self.health
