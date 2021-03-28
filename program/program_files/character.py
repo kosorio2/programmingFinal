@@ -5,6 +5,15 @@ class Character(arcade.Sprite):
         super().__init__(file, size)
         self.health = 100
         self.shield = 0
+        self.idle_animation = []
+        self.attack_animation = []
+        self.take_damage_animation = []
+        self.death_animation = []
+        self.next_animation = 0
+
+    def next_image_idle(self):
+        self.filename = self.idle_animation[self.next_animation % len(self.idle_animation)]
+        self.next_animation += 1
 
     def is_enemy(self):
         return False
