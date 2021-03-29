@@ -184,7 +184,7 @@ class MyGame(arcade.Window):
                 card.center_x = SCREEN_WIDTH - 90
                 card.center_y = SCREEN_HEIGHT - 90
             for character in hit_list:
-                if effect[0] == "Attack":
+                if effect[0] == "Attack" and character.is_enemy():
                     self.protagonist_sprite.set_attack()
                     character.do_damage(effect[1])
                     self.cards_played = self.cards_played + 1
