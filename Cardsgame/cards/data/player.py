@@ -1,5 +1,6 @@
 from character import Character
 import arcade
+import random
 
 
 
