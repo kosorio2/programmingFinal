@@ -15,6 +15,8 @@ class MySound(arcade.Window):
         self.current_song_index = 0
         self.current_player = None
         self.music = None
+        self.sound_list = []
+        self.sound = None
     
 
     def advance_song(self):
@@ -31,7 +33,7 @@ class MySound(arcade.Window):
             self.music.stop()
 
         # Play the next song
-        print(f"Playing {self.music_list[self.current_song_index]}")
+        #print(f"Playing {self.music_list[self.current_song_index]}")
         self.music = arcade.Sound(self.music_list[self.current_song_index], streaming=True)
         self.current_player = self.music.play(MUSIC_VOLUME)
         # This is a quick delay. If we don't do this, our elapsed time is 0.0
@@ -50,3 +52,14 @@ class MySound(arcade.Window):
         self.play_song()
 
 
+    def play_sound(self):
+
+        self.music = arcade.Sound(self.sound_list, streaming=True)
+        self.current_player = self.sound.play(MUSIC_VOLUME*2)
+
+
+    def card_sound(self):
+
+        self.sound_list = [":resources:sounds/upgrade3.wav"]
+
+        self.play_sound()

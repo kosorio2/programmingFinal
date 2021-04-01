@@ -2,6 +2,7 @@ from card import Card
 from cursor import Cursor
 from enemy import Enemy
 from player import Player
+from background_sound import MySound
 
 import random
 import arcade

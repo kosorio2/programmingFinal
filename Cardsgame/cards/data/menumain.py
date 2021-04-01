@@ -9,6 +9,7 @@ g.setup()
 while g.running:
     g.curr_menu.display_menu()
     g.game_loop()
+    MySound.music.stop()
     # while g.setup():
         
     
