@@ -49,6 +49,7 @@ class MyGame(arcade.Window):
         self.held_cards = None
         self.cards_played = 0
         self.already_went = 0
+        
 
         # Set up the player info
         self.cursor_sprite = None
@@ -59,6 +60,12 @@ class MyGame(arcade.Window):
 
         self.background = None
         self.game_over_screen = None
+
+        #Play sound effects
+        self.attackSound = arcade.load_sound("sounds/attackSound.wav")
+        self.defendSound = arcade.load_sound("sounds/defendSound.wav")
+        self.healSound = arcade.load_sound("sounds/healSound.wav")
+
 
     def setup(self):
         """ Set up the game and initialize the variables. """
@@ -187,6 +194,7 @@ class MyGame(arcade.Window):
             for character in hit_list:
                 if effect[0] == "Attack" and character.is_enemy():
                     self.protagonist_sprite.set_attack()
+                    arcade.play_sound(self.attackSound)  
                     character.do_damage(effect[1])
                     self.cards_played = self.cards_played + 1
                     self.already_went = 1
@@ -196,6 +204,7 @@ class MyGame(arcade.Window):
                     self.held_cards[0].kill()
                 elif effect[0] == "Defend" and character.is_enemy() == False:
                     self.protagonist_sprite.set_defend()
+                    arcade.play_sound(self.defendSound)
                     character.add_shield(effect[1])
                     self.cards_played = self.cards_played + 1
                     self.already_went = 1
@@ -205,6 +214,7 @@ class MyGame(arcade.Window):
                     self.held_cards[0].kill()
                 elif effect[0] == "Heal" and character.is_enemy() == False:
                     self.protagonist_sprite.set_heal()
+                    arcade.play_sound(self.healSound)
                     character.add_health(effect[1])
                     self.cards_played = self.cards_played + 1
                     self.already_went = 1
