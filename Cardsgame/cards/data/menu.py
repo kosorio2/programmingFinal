@@ -75,7 +75,7 @@ class MainMenu(Menu):
 class InstructionsMenu(Menu):
     def __init__(self, game):
         Menu.__init__(self, game)
-        self.state = 'Volume'
+        self.state = 'Instructions'
         self.volx, self.voly = self.mid_w, self.mid_h + 20
         self.controlsx, self.controlsy = self.mid_w, self.mid_h + 40
         self.cursor_rect.midtop = (self.volx + self.offset, self.voly)
@@ -83,12 +83,22 @@ class InstructionsMenu(Menu):
     def display_menu(self):
         self.run_display = True
         while self.run_display:
+            plusten=10
             self.game.check_events()
             self.check_input()
             self.game.display.fill((0, 0, 0))
             self.game.draw_text('Instructions', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 30)
-            self.game.draw_text("Volume", 15, self.volx, self.voly)
-            self.game.draw_text("Controls", 15, self.controlsx, self.controlsy)
+            self.game.draw_text("The objective of the game is to kill the enemy by either attacking or defending and healing yourself.", 9, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 + plusten)
+            self.game.draw_text("You are dealt 5 random cards. Each turn you can select three and wait for the opponent to", 9, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 + plusten*2)
+            self.game.draw_text("make a move. Attacking only works against the enemy, while healing and defending only work on", 9, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 + plusten*3)
+            self.game.draw_text("the player. Drag a card with your mouse and release it on your desired target", 9, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 + plusten*4)
+            self.game.draw_text("If you beat the 3 enemies, you win!", 9, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 + plusten*5)
+            self.game.draw_text("To begin, pick and enemy and a player and begin. Good Luck!", 9, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 + plusten*6)
+            self.game.draw_text("Press the backspace key to go back to the main menu.", 9, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 + plusten*12)
+            # Attacking only works agains the enemy, while healing and defending only works on the player. \n Drag the desire card with your mouse and 
+            # release it on your desired target. Be careful with the enemy because he will strike back. As you kill enemies, you get more points and advance levels.
+            # There are _____ levels and it ends after killing the most dangerous enemy. Good luck!""", 15, self.volx, self.voly)
+            #self.game.draw_text("Controls", 15, self.controlsx, self.controlsy)
             self.draw_cursor()
             self.blit_screen()
 
@@ -121,7 +131,7 @@ class CreditsMenu(Menu):
             self.game.display.fill(self.game.BLACK)
             self.game.draw_text('Credits', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 20)
             self.game.draw_text('Made by ', 15, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 + 10)
-            self.game.draw_text('Kathy Osorio', 15, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 + 40)
-            self.game.draw_text('Jacob Morgan', 15, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 + 60)
+            self.game.draw_text('Jacob Morgan', 15, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 + 40)
+            self.game.draw_text('Kathy Osorio', 15, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 + 60)
             self.game.draw_text('Akemi Beltran', 15, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 + 80)
             self.blit_screen()
