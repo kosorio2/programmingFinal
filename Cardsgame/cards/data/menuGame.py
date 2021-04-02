@@ -18,7 +18,7 @@ class Game():
         self.font_name = pygame.font.get_default_font()
         self.BLACK, self.WHITE = (0, 0, 0), (255, 255, 255)
         self.main_menu = MainMenu(self)
-        self.options = OptionsMenu(self)
+        self.Instructions = InstructionsMenu(self)
         self.credits = CreditsMenu(self)
     
 
