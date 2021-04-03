@@ -46,8 +46,8 @@ class MySound(arcade.Window):
         """ Set up the game here. Call this function to restart the game. """
 
         # List of music
-        self.music_list = [":resources:music/funkyrobot.mp3",
-                           ":resources:music/1918.mp3"]
+        self.music_list = [":resources:music/1918.mp3",
+                          ":resources:music/funkyrobot.mp3"]
         # Array index of what to play
         self.current_song_index = 0
         # Play the song

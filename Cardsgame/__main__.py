@@ -1,5 +1,5 @@
-from menuGame import Game
-from background_sound import MySound
+from cards.data.menuGame import Game
+from cards.data.background_sound import MySound
 import arcade
 
 g = Game()
@@ -11,8 +11,3 @@ while g.running:
     g.game_loop()
     # MySound.music.stop()
     # while g.setup():
-        
-    
-    
-          
-    

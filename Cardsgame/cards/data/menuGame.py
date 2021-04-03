@@ -1,8 +1,11 @@
 import pygame
-from menu import *
+from cards.data.menu import *
+# from menu import MainMenu
+# from menu import InstructionsMenu
+# from menu import CreditsMenu
 import arcade
 import time 
-from director import MyGame
+from cards.data.director import MyGame
 
 #We need to import Game and delete game 
 MUSIC_VOLUME = 0.5

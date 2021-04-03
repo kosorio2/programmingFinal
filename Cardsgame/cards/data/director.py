@@ -1,8 +1,8 @@
-from card import Card
-from cursor import Cursor
-from enemy import Enemy
-from player import Player
-from background_sound import MySound
+from cards.data.card import Card
+from cards.data.cursor import Cursor
+from cards.data.enemy import Enemy
+from cards.data.player import Player
+from cards.data.background_sound import MySound
 
 import random
 import arcade

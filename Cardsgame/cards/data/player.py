@@ -1,4 +1,4 @@
-from character import Character
+from cards.data.character import Character
 import arcade
 import random
 

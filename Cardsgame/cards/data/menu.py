@@ -31,7 +31,7 @@ class MainMenu(Menu):
             self.game.check_events()
             self.check_input()
             self.game.display.fill(self.game.BLACK)
-            self.game.draw_text('Luck of the Drawn!', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 20)
+            self.game.draw_text('Luck of the Draw!', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 20)
             self.game.draw_text("Start Game", 20, self.startx, self.starty)
             self.game.draw_text("Instructions", 20, self.Instructionsx, self.Instructionsy)
             self.game.draw_text("Credits", 20, self.creditsx, self.creditsy)
