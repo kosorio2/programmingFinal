@@ -17,7 +17,7 @@ class MySound(arcade.Window):
         self.music = None
         self.sound_list = []
         self.sound = None
-        self.attackSound = arcade.load_sound("sounds/attackSound.wav")
+        self.attackSound = arcade.load_sound("Cardsgame/cards/data/sounds/attackSound.wav")
 
     def advance_song(self):
         """ Advance our pointer to the next song. This does NOT start the song. """
@@ -46,8 +46,8 @@ class MySound(arcade.Window):
         """ Set up the game here. Call this function to restart the game. """
 
         # List of music
-        self.music_list = [":resources:music/1918.mp3",
-                          ":resources:music/funkyrobot.mp3"]
+        self.music_list = [":resources:music/funkyrobot.mp3",
+                           ":resources:music/1918.mp3"]
         # Array index of what to play
         self.current_song_index = 0
         # Play the song

@@ -8,9 +8,9 @@ class Card(arcade.Sprite):
     def __init__(self, file, size, card_number):
         super().__init__(file, size)
         self.card_number = card_number
-        if card_number <= 22:
+        if card_number <= 36:
             number = 0
-        elif card_number <= 45:
+        elif card_number <= 53:
             number = 1
         else:
             number = 2

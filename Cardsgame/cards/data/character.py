@@ -4,6 +4,7 @@ class Character(arcade.Sprite):
     def __init__(self, file, size):
         super().__init__(file, size)
         self.health = 100
+        self.max_health = self.health + 10
         self.shield = 0
         self.idle_animation = []
         self.attack_animation = []
@@ -33,6 +34,8 @@ class Character(arcade.Sprite):
 
     def add_health(self, additional_health):
         self.health = self.health + additional_health
+        if self.health > self.max_health:
+            self.health = self.max_health
 
     def get_shield(self):
         return self.shield
