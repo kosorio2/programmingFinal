@@ -9,7 +9,7 @@ class Enemy(Character):
         self.strength = 1
         which_enemy = str(random.randint(1, 3))
         self.intents = ["attack", "defend", "heal", "attack", "strengthen"]
-        self.health = 100
+        self.health = 50
         self.max_health = self.health + 5
         self.idle_animation = [f"z_images/minotaur/Minotaur_0{which_enemy}_Idle_000", f"z_images/minotaur/Minotaur_0{which_enemy}_Idle_001", f"z_images/minotaur/Minotaur_0{which_enemy}_Idle_002", f"z_images/minotaur/Minotaur_0{which_enemy}_Idle_003", f"z_images/minotaur/Minotaur_0{which_enemy}_Idle_004", f"z_images/minotaur/Minotaur_0{which_enemy}_Idle_005", f"z_images/minotaur/Minotaur_0{which_enemy}_Idle_006", f"z_images/minotaur/Minotaur_0{which_enemy}_Idle_007", f"z_images/minotaur/Minotaur_0{which_enemy}_Idle_008", f"z_images/minotaur/Minotaur_0{which_enemy}_Idle_009", f"z_images/minotaur/Minotaur_0{which_enemy}_Idle_010", f"z_images/minotaur/Minotaur_0{which_enemy}_Idle_011"]
         for i in range(0, 12):

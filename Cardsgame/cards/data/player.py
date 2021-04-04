@@ -7,7 +7,7 @@ import random
 class Player(Character):
     def __init__(self, file, size):
         super().__init__(file, size)
-        self.health = 1
+        self.health = 100
         self.strength = 1
         which_character = random.randint(1, 3)
         self.idle_animation = [f"z_images/wraith/Wraith_0{which_character}_Idle_000", f"z_images/wraith/Wraith_0{which_character}_Idle_001", f"z_images/wraith/Wraith_0{which_character}_Idle_002", f"z_images/wraith/Wraith_0{which_character}_Idle_003", f"z_images/wraith/Wraith_0{which_character}_Idle_004", f"z_images/wraith/Wraith_0{which_character}_Idle_005", f"z_images/wraith/Wraith_0{which_character}_Idle_006", f"z_images/wraith/Wraith_0{which_character}_Idle_007", f"z_images/wraith/Wraith_0{which_character}_Idle_008", f"z_images/wraith/Wraith_0{which_character}_Idle_009", f"z_images/wraith/Wraith_0{which_character}_Idle_010", f"z_images/wraith/Wraith_0{which_character}_Idle_011"]
