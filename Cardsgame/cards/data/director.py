@@ -4,6 +4,8 @@ from cards.data.enemy import Enemy
 from cards.data.player import Player
 from cards.data.background_sound import MySound
 
+import sys
+import time
 import random
 import arcade
 
@@ -85,13 +87,17 @@ class MyGame(arcade.Window):
         self.additional_cards = []
         self.held_cards_original_position = []
         self.held_cards = []
+
+        self.counter = 0
+
+
         for i in range(5):
             number = self.choose_number(self.usedNumbers, 68)
             starting_hand.append(number)
             self.deck_numbers.append(number)
         print(starting_hand)
 
-        self.background = arcade.load_texture("z_images/background.png")
+        self.background = arcade.load_texture("z_images/Backgrounds/background_0.png")
         self.game_over_screen = arcade.load_texture("z_images/game_over.png")
 
         j = 1
@@ -101,7 +107,7 @@ class MyGame(arcade.Window):
             j += 1
             self.deck.append(card)
         
-        for i in range(10):
+        for i in range(5):
             number = self.choose_number(self.usedNumbers, 68)
             self.additional_cards.append(number)
             self.deck_numbers.append(number)
@@ -178,8 +184,12 @@ class MyGame(arcade.Window):
         effect = self.held_cards[0].get_effect()
         
 
-        if len(hit_list) > 0 and self.protagonist_sprite.get_health() > 0:
+        if len(hit_list) > 0 and self.protagonist_sprite.get_health() > 0 and len(hit_list) < 2:
             reset_position = False
+
+        for character in hit_list:
+            if character.is_enemy() == False and len(hit_list) > 0 and self.protagonist_sprite.get_health() > 0:
+                reset_position = False
 
         if reset_position:
             # Where-ever we were dropped, it wasn't valid. Reset each card's position
@@ -194,10 +204,10 @@ class MyGame(arcade.Window):
             if effect[0] == "Attack" and character.is_enemy():
                 self.protagonist_sprite.set_attack()
                 arcade.play_sound(self.attackSound)  
-                character.do_damage(effect[1])
+                character.do_damage(effect[1] * self.protagonist_sprite.get_strength())
                 self.cards_played = self.cards_played + 1
                 self.already_went = 1
-
+                print(self.deck_numbers)
                 self.used_cards.append(self.held_cards[0].get_card_number())
                 self.deck_numbers.append(self.held_cards[0].get_card_number())
                 self.held_cards[0].kill()
@@ -221,6 +231,16 @@ class MyGame(arcade.Window):
                 self.used_cards.append(self.held_cards[0].get_card_number())
                 self.deck_numbers.append(self.held_cards[0].get_card_number())
                 self.held_cards[0].kill()
+            elif effect[0] == "Fortify" and character.is_enemy() == False:
+                self.protagonist_sprite.set_heal()
+                arcade.play_sound(self.healSound)
+                character.add_strength(effect[1])
+                self.cards_played = self.cards_played + 1
+                self.already_went = 1
+
+                self.used_cards.append(self.held_cards[0].get_card_number())
+                self.deck_numbers.append(self.held_cards[0].get_card_number())
+                self.held_cards[0].kill()
             else:
                 for pile_index, card in enumerate(self.held_cards):
                     card.position = self.held_cards_original_position[pile_index]
@@ -236,6 +256,8 @@ class MyGame(arcade.Window):
         self.deck.draw()
         self.character_list.draw()
         self.cursor_list.draw()
+        for character in self.character_list:
+            character.set_hit_box(((-100.0, -200.0), (100.0, -200.0), (100.0, 200.0), (-100.0, 200.0), (-120, 0.0)))
         
         for character in self.character_list:
             character.next_image_idle()
@@ -247,11 +269,11 @@ class MyGame(arcade.Window):
         for character in self.character_list:
             if character.is_character() == True:
                 output = f"Health: {character.get_health()}\nShield: {character.get_shield()}"
-                if character.is_enemy():
-                    output = output + f"\nStrength: {character.get_strength()}"
+                output = output + f"\nStrength: {character.get_strength()}"
                 arcade.draw_text(output, character.center_x - 40, character.center_y + 125, arcade.color.WHITE, 14)
         if self.game_over == True:
-            arcade.draw_text(f"  GAME OVER\nYour Score: {self.score}", SCREEN_WIDTH / 2 - 300, SCREEN_HEIGHT / 2 + 250, arcade.color.WHITE, 28)
+            self.background = self.game_over_screen
+            arcade.draw_text(f"  GAME OVER\nYour Score: {self.score - 1}", SCREEN_WIDTH / 2 - 200, SCREEN_HEIGHT / 2 + 250, arcade.color.WHITE, 28)
 
     def on_mouse_motion(self, x, y, dx, dy):
         """ Handle Mouse Motion """
@@ -280,21 +302,39 @@ class MyGame(arcade.Window):
             if character.is_enemy:
                 number_of_enemies += 1
         if number_of_enemies == 1:
-            self.score += 1
             new_enemies = self.score
             if new_enemies > 3:
                 new_enemies = 3
-            for i in range(0, new_enemies):
-                if i == 1:
-                    enemy_sprite = Enemy("z_images/Enemy.png", ENEMY_SPRITE_SCALING)
-                    enemy_sprite.center_x = SCREEN_WIDTH - (390 * (i + 1))
-                    enemy_sprite.center_y = 230
-                    self.character_list.append(enemy_sprite)
-                else:
-                    enemy_sprite = Enemy("z_images/Enemy.png", ENEMY_SPRITE_SCALING)
-                    enemy_sprite.center_x = SCREEN_WIDTH - (390 * (i + 1))
-                    enemy_sprite.center_y = 250
-                    self.character_list.append(enemy_sprite)
+            # self.counter += 1
+            self.protagonist_sprite.move_right()
+            if self.protagonist_sprite.center_x > SCREEN_WIDTH:
+                self.protagonist_sprite.center_x = 0
+                self.background = arcade.load_texture(f"z_images/Backgrounds/background_{self.score % 5}.png")
+            # print(self.counter)
+
+            if self.protagonist_sprite.center_x == 180:
+                self.score += 1
+                # print(self.counter)
+                for i in range(0, new_enemies):
+                    self.deck_numbers.append(70)
+                    if i == 1:
+                        enemy_sprite = Enemy("z_images/Enemy.png", ENEMY_SPRITE_SCALING)
+                        enemy_sprite.center_x = SCREEN_WIDTH - (390 * (i + 1))
+                        enemy_sprite.center_y = 230
+                        if self.score > 4:
+                            enemy_sprite.add_strength()
+                        enemy_sprite.hit_box_algorithm = "Detailed"
+                        self.character_list.append(enemy_sprite)
+
+                    else:
+                        enemy_sprite = Enemy("z_images/Enemy.png", ENEMY_SPRITE_SCALING)
+                        enemy_sprite.center_x = SCREEN_WIDTH - (390 * (i + 1))
+                        enemy_sprite.center_y = 250
+                        if self.score > 5:
+                            enemy_sprite.add_strength()
+                        enemy_sprite.hit_box_algorithm = "Detailed"
+                        self.character_list.append(enemy_sprite)
+                self.counter = 0
 
         # Generate a list of all sprites that collided with the player.
         cards_hit_list = arcade.check_for_collision_with_list(self.deck[0], self.deck)
@@ -362,6 +402,7 @@ class MyGame(arcade.Window):
                 self.already_went = self.already_went + 1
             
             self.protagonist_sprite.reset_shield()
+            self.protagonist_sprite.reset_strength()
             # for card in self.deck:
             #     self.choose_number(self.deck, 68)    
         

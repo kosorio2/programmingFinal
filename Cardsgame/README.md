@@ -4,9 +4,8 @@ More information coming...
 
 ## Getting Started
 ---
-To start the game type the following commands:
-  python Cardsgame
-  ---OR---
+To start the game cd into the programmingFinal folder and type the following commands:
+  py -m pip install -U pygame
   py Cardsgame
 
   The menu will then  be displayed. Use the arrow keys on keyboard to select "Start game" and then press enter. The game should then run. 
@@ -20,12 +19,12 @@ There are three types of cards: Attack, Heal, and Defend.
 Each card works as follows
 Attack: Takes 7 points from the enemy's health. It can only be used against the enemy.
 Heal: Restores 5 points of the player's (your) health. It cannot be used on the enemy.
-Defend: Gives the player an extra protection (7 points) from the enemy's attack. 
+Defend: Gives the player an extra 7 protection from the enemy's attack. 
 
-Each turn, the player can use three cards to either attack, heal, or defend himself against the enemy. The enemy then gets one turn
-and randomly chooses fmro the same three options. 
+Each turn, the player can use three cards to either attack, heal,  or defend himself against the enemy. The enemy then gets one turn
+and randomly chooses from the same four options. 
 
-The first one to get 0 points looses. 
+Play until your life drops to zero. Keep trying and see how high of a score you can get!
 
 More enemies will come...
 
