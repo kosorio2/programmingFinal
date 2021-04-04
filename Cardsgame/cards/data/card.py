@@ -12,13 +12,17 @@ class Card(arcade.Sprite):
             number = 0
         elif card_number <= 53:
             number = 1
+        elif card_number == 70:
+            number = 3
         else:
             number = 2
-        card = ["Attack", "Defend", "Heal"]
+        card = ["Attack", "Defend", "Heal", "Fortify"]
         self.card_type = card[number]
         power = random.randint(5, 10)
         if number == 2:
             power = random.randint(3, 7)
+        if number == 3:
+            power = random.randint(1, 2)
         self.effect = [card[number], power]
         self.in_hand = False
         if self.effect[0] == "Attack":
@@ -27,6 +31,8 @@ class Card(arcade.Sprite):
             self.texture = arcade.load_texture("z_images/card1.png")
         elif self.effect[0] == "Heal":
             self.texture = arcade.load_texture("z_images/card6.png")
+        else:
+            self.texture = arcade.load_texture("z_images/card12.png")
 
     def effect_string(self):
         return f"{self.effect[0]}\n{self.effect[1]}"
