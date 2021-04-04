@@ -17,11 +17,12 @@ To start the game cd into the programmingFinal folder and type the following com
 The objective of the game is to destroy the enemy by using differemt cards.
 There are three types of cards: Attack, Heal, and Defend. 
 Each card works as follows
-Attack: Takes 7 points from the enemy's health. It can only be used against the enemy.
-Heal: Restores 5 points of the player's (your) health. It cannot be used on the enemy.
-Defend: Gives the player an extra 7 protection from the enemy's attack. 
+Attack: Takes points from the enemy's health. It can only be used against the enemy.
+Heal: Restores points of the player's (your) health. It cannot be used on the enemy.
+Defend: Gives the player an extra protection from the enemy's attack. 
+Fortify: Temporarily increases damage dealt using Attack cards.
 
-Each turn, the player can use three cards to either attack, heal,  or defend himself against the enemy. The enemy then gets one turn
+Each turn, the player can use three cards to either attack, heal, fortify, or defend himself against the enemy. The enemy then gets one turn
 and randomly chooses from the same four options. 
 
 Play until your life drops to zero. Keep trying and see how high of a score you can get!
