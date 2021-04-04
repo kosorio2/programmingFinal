@@ -4,6 +4,8 @@ from cards.data.enemy import Enemy
 from cards.data.player import Player
 from cards.data.background_sound import MySound
 
+import sys
+import time
 import random
 import arcade
 
@@ -85,13 +87,17 @@ class MyGame(arcade.Window):
         self.additional_cards = []
         self.held_cards_original_position = []
         self.held_cards = []
+
+        self.counter = 0
+
+
         for i in range(5):
             number = self.choose_number(self.usedNumbers, 68)
             starting_hand.append(number)
             self.deck_numbers.append(number)
         print(starting_hand)
 
-        self.background = arcade.load_texture("z_images/background.png")
+        self.background = arcade.load_texture("z_images/Backgrounds/background_0.png")
         self.game_over_screen = arcade.load_texture("z_images/game_over.png")
 
         j = 1
@@ -251,7 +257,8 @@ class MyGame(arcade.Window):
                     output = output + f"\nStrength: {character.get_strength()}"
                 arcade.draw_text(output, character.center_x - 40, character.center_y + 125, arcade.color.WHITE, 14)
         if self.game_over == True:
-            arcade.draw_text(f"  GAME OVER\nYour Score: {self.score}", SCREEN_WIDTH / 2 - 300, SCREEN_HEIGHT / 2 + 250, arcade.color.WHITE, 28)
+            self.background = self.game_over_screen
+            arcade.draw_text(f"  GAME OVER\nYour Score: {self.score - 1}", SCREEN_WIDTH / 2 - 300, SCREEN_HEIGHT / 2 + 250, arcade.color.WHITE, 28)
 
     def on_mouse_motion(self, x, y, dx, dy):
         """ Handle Mouse Motion """
@@ -280,21 +287,35 @@ class MyGame(arcade.Window):
             if character.is_enemy:
                 number_of_enemies += 1
         if number_of_enemies == 1:
-            self.score += 1
             new_enemies = self.score
             if new_enemies > 3:
                 new_enemies = 3
-            for i in range(0, new_enemies):
-                if i == 1:
-                    enemy_sprite = Enemy("z_images/Enemy.png", ENEMY_SPRITE_SCALING)
-                    enemy_sprite.center_x = SCREEN_WIDTH - (390 * (i + 1))
-                    enemy_sprite.center_y = 230
-                    self.character_list.append(enemy_sprite)
-                else:
-                    enemy_sprite = Enemy("z_images/Enemy.png", ENEMY_SPRITE_SCALING)
-                    enemy_sprite.center_x = SCREEN_WIDTH - (390 * (i + 1))
-                    enemy_sprite.center_y = 250
-                    self.character_list.append(enemy_sprite)
+            # self.counter += 1
+            self.protagonist_sprite.move_right()
+            if self.protagonist_sprite.center_x > SCREEN_WIDTH:
+                self.protagonist_sprite.center_x = 0
+                self.background = arcade.load_texture(f"z_images/Backgrounds/background_{self.score % 6}.png")
+            # print(self.counter)
+
+            if self.protagonist_sprite.center_x == 180:
+                self.score += 1
+                # print(self.counter)
+                for i in range(0, new_enemies):
+                    if i == 1:
+                        enemy_sprite = Enemy("z_images/Enemy.png", ENEMY_SPRITE_SCALING)
+                        enemy_sprite.center_x = SCREEN_WIDTH - (390 * (i + 1))
+                        enemy_sprite.center_y = 230
+                        if self.score > 3:
+                            enemy_sprite.add_strength()
+                        self.character_list.append(enemy_sprite)
+                    else:
+                        enemy_sprite = Enemy("z_images/Enemy.png", ENEMY_SPRITE_SCALING)
+                        enemy_sprite.center_x = SCREEN_WIDTH - (390 * (i + 1))
+                        enemy_sprite.center_y = 250
+                        if self.score > 4:
+                            enemy_sprite.add_strength()
+                        self.character_list.append(enemy_sprite)
+                self.counter = 0
 
         # Generate a list of all sprites that collided with the player.
         cards_hit_list = arcade.check_for_collision_with_list(self.deck[0], self.deck)

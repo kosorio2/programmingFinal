@@ -78,6 +78,9 @@ class Player(Character):
                     self.counter += 1
             self.turn += 1
 
+    def move_right(self):
+        self.center_x += 10
+
     def set_attack(self):
         if self.health > 0:
             self.counter = 0
